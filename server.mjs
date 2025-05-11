@@ -20,7 +20,7 @@ const app = express();
 
 // Настройки CORS
 app.use(cors({
-    origin: ['http://localhost:3000', 'http://localhost:3001', 'https://app.vetro.md', 'https://flower-market-rho.vercel.app'],
+    origin: ['http://localhost:3000', 'https://flower-market-rho.vercel.app', 'http://localhost:3001', 'https://app.vetro.md'],
     credentials: true,
 }));
 
