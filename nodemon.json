@@ -1,4 +1,4 @@
 {
-  "exec": "npx babel-node --extensions .mjs,.jsx server.mjs",
-  "watch": ["server.mjs", "models/"]
+  "exec": "npx babel-node --extensions .mjs,.jsx server.js",
+  "watch": ["server.js", "models/"]
 }

@@ -47,7 +47,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "server": "nodemon --exec babel-node --extensions .js,.jsx server.mjs",
+    "server": "nodemon --exec babel-node --extensions .js,.jsx server.js",
     "client": "npm start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run start\""
   },
@@ -92,7 +92,7 @@
     "webpack": "^4.42.0"
   },
   "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
-  "main": "server.mjs",
+  "main": "server.js",
   "keywords": [],
   "author": "",
   "license": "ISC",
