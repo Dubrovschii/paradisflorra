@@ -29,8 +29,6 @@ app.use(cors({
 // Парсинг JSON
 app.use(express.json());
 
-
-
 // Настройка сессий
 app.use(session({
     secret: process.env.SESSION_SECRET || 'default-secret',
