@@ -18,9 +18,11 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 
+const PORT = process.env.PORT || 3001;
 // Настройки CORS
+
 app.use(cors({
-    origin: ['http://localhost:3000', 'https://flower-market-rho.vercel.app', 'http://localhost:3001', 'https://app.vetro.md'],
+    origin: ['http://localhost:3000', 'http://app.vetro.md/', 'http://localhost:3001', 'https://app.vetro.md'],
     credentials: true,
 }));
 
@@ -118,7 +120,7 @@ const startServer = async () => {
         app.use(adminJs.options.rootPath, adminRouter);
 
         // API endpoints
-        app.get('/', async (req, res) => {
+        app.get('/api/', async (req, res) => {
             try {
                 const [results] = await sequelize.query('SELECT * FROM backend_slider');
                 res.status(200).json(results);
@@ -126,8 +128,8 @@ const startServer = async () => {
                 res.status(500).json({ error: err.message });
             }
         });
-
-        app.get('/category', async (req, res) => {
+        app.use('/', express.static('build'));
+        app.get('/api/category', async (req, res) => {
             try {
                 const [results] = await sequelize.query('SELECT * FROM backend_category');
                 res.status(200).json(results);
@@ -135,8 +137,45 @@ const startServer = async () => {
                 res.status(500).json({ error: err.message });
             }
         });
+        app.get('/api/subcategory', async (req, res) => {
+            try {
+                const [results] = await sequelize.query('SELECT * FROM backend_subcategory');
+                res.status(200).json(results);
+            } catch (err) {
+                res.status(500).json({ error: err.message });
+            }
+        });
+        app.get('/api/product', async (req, res) => {
+            try {
+                const page = parseInt(req.query.page) || 1;
+                const perPage = parseInt(req.query.perPage) || 10;
+                const offset = (page - 1) * perPage;
 
-        app.get('/locations', async (req, res) => {
+                const [[{ total }]] = await sequelize.query('SELECT COUNT(*) AS total FROM backend_product');
+                const [results] = await sequelize.query(`SELECT * FROM backend_product LIMIT ${perPage} OFFSET ${offset}`);
+
+                res.status(200).json({
+                    data: results,
+                    total,
+                    page,
+                    perPage,
+                    totalProducts: total,
+                    totalPages: Math.ceil(total / perPage),
+                });
+            } catch (err) {
+                res.status(500).json({ error: err.message });
+            }
+        });
+
+        // app.get('/api/product', async (req, res) => {
+        //     try {
+        //         const [results] = await sequelize.query('SELECT * FROM backend_product');
+        //         res.status(200).json(results);
+        //     } catch (err) {
+        //         res.status(500).json({ error: err.message });
+        //     }
+        // });
+        app.get('/api/locations', async (req, res) => {
             try {
                 const [results] = await sequelize.query('SELECT * FROM backend_locations');
                 res.status(200).json(results);
@@ -144,11 +183,13 @@ const startServer = async () => {
                 res.status(500).json({ error: err.message });
             }
         });
+
         app.use('/uploads/promoslider', express.static(path.join(__dirname, 'public', 'uploads/promoslider')));
         app.use('/uploads', express.static(path.join(__dirname, 'public', 'uploads')));
         adminJs.watch()
 
         app.listen(3001, () => {
+            console.log(PORT);
             console.log('Server is running on http://localhost:3001');
             console.log('AdminJS is running at http://localhost:3001/admin');
         });

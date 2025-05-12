@@ -6,17 +6,24 @@ const HeaderOne = () => {
   const [scroll, setScroll] = useState(false);
   const [category, setCategory] = useState([]);
   const [locations, setLocations] = useState([]);
+  const [subcategory, setSubCategory] = useState([]);
   useEffect(() => {
-    fetch("http://localhost:3001/locations")
+    fetch(`${process.env.REACT_APP_BASE_URL}/api/locations`)
       .then((res) => res.json())
       .then((data) => setLocations(data))
-      .catch((err) => console.error("Ошибка загрузки слайдов", err));
+      .catch((err) => console.error("Ошибка загрузки", err));
   }, []);
   useEffect(() => {
-    fetch("http://localhost:3001/category")
+    fetch(`${process.env.REACT_APP_BASE_URL}/api/category`)
       .then((res) => res.json())
       .then((data) => setCategory(data))
-      .catch((err) => console.error("Ошибка загрузки слайдов", err));
+      .catch((err) => console.error("Ошибка загрузки ", err));
+  }, []);
+  useEffect(() => {
+    fetch(`${process.env.REACT_APP_BASE_URL}/api/subcategory`)
+      .then((res) => res.json())
+      .then((data) => setSubCategory(data))
+      .catch((err) => console.error("Ошибка загрузки", err));
   }, []);
 
   useEffect(() => {
@@ -177,16 +184,6 @@ const HeaderOne = () => {
                     >
                       {" "}
                       Shop Details
-                    </Link>
-                  </li>
-                  <li className="common-dropdown__item nav-submenu__item">
-                    <Link
-                      to="/product-details-two"
-                      className="common-dropdown__link nav-submenu__link hover-bg-neutral-100"
-                      onClick={() => setActiveIndex(null)}
-                    >
-                      {" "}
-                      Shop Details Two
                     </Link>
                   </li>
                 </ul>
@@ -797,7 +794,7 @@ const HeaderOne = () => {
                   </div>
                   {/* Logo End */}
                   <ul className="scroll-sm p-0 py-8 w-300 max-h-400 overflow-y-auto">
-                    {category.map((item, index) => (
+                    {category.map((item) => (
                       <li
                         key={item.id}
                         onClick={() => handleCatClick(1)}
@@ -810,39 +807,35 @@ const HeaderOne = () => {
                           className="text-gray-500 text-15 py-12 px-16 flex-align gap-8 rounded-0"
                         >
                           <span>{item.name}</span>
+                          {!!item.is_for_subcategory && (
+                            <span className="icon text-md d-flex ms-auto">
+                              <i className="ph ph-caret-right" />
+                            </span>
+                          )}
                         </Link>
-                        {/* <div
-                          className={`submenus-submenu py-16 ${
-                            activeIndexCat === 1 ? "open" : ""
-                          }`}
-                        >
-                          <h6 className="text-lg px-16 submenus-submenu__title">
-                            {item.name}
-                          </h6>
-                          <ul className="submenus-submenu__list max-h-300 overflow-y-auto scroll-sm">
-                            <li>
-                              <Link to="/shop">Soda &amp; Cocktail Mix </Link>
-                            </li>
-                            <li>
-                              <Link to="/shop">
-                                {" "}
-                                Sports &amp; Energy Drinks
-                              </Link>
-                            </li>
-                            <li>
-                              <Link to="/shop"> Non Alcoholic Drinks</Link>
-                            </li>
-                            <li>
-                              <Link to="/shop"> Packaged Water </Link>
-                            </li>
-                            <li>
-                              <Link to="/shop"> Spring Water</Link>
-                            </li>
-                            <li>
-                              <Link to="/shop"> Flavoured Water </Link>
-                            </li>
-                          </ul>
-                        </div> */}
+                        {!!item.is_for_subcategory && (
+                          <div
+                            className={`submenus-submenu py-16 ${
+                              activeIndexCat === 0 ? "open" : ""
+                            }`}
+                          >
+                            <h6 className="text-lg px-16 submenus-submenu__title">
+                              Subcategory
+                            </h6>
+                            <ul className="submenus-submenu__list max-h-300 overflow-y-auto scroll-sm">
+                              {subcategory
+                                .filter(
+                                  (subItem) =>
+                                    subItem.parent_category === item.id
+                                )
+                                .map((subItem) => (
+                                  <li key={subItem.id}>
+                                    <Link to="/shop">{subItem.name}</Link>
+                                  </li>
+                                ))}
+                            </ul>
+                          </div>
+                        )}
                       </li>
                     ))}
                   </ul>
@@ -854,7 +847,7 @@ const HeaderOne = () => {
                 {/* Nav Menu Start */}
                 <ul className="nav-menu flex-align ">
                   <li className="on-hover-item nav-menu__item ">
-                    <Link to="#" className="nav-menu__link">
+                    <Link to="/" className="nav-menu__link">
                       Acasă
                     </Link>
                   </li>
@@ -889,7 +882,7 @@ const HeaderOne = () => {
                           Shop Details
                         </NavLink>
                       </li>
-                      <li className="common-dropdown__item nav-submenu__item">
+                      {/* <li className="common-dropdown__item nav-submenu__item">
                         <NavLink
                           to="/product-details-two"
                           className={(navData) =>
@@ -901,7 +894,7 @@ const HeaderOne = () => {
                           {" "}
                           Shop Details Two
                         </NavLink>
-                      </li>
+                      </li> */}
                     </ul>
                   </li>
                   <li className="on-hover-item nav-menu__item has-submenu">

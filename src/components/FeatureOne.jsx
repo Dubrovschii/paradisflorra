@@ -1,14 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Slider from "react-slick";
-
 const FeatureOne = () => {
+  const [lengthSlider, setLengthSlider] = useState(0);
   const [category, setCategory] = useState([]);
   useEffect(() => {
-    fetch("http://localhost:3001/category")
+    fetch(`${process.env.REACT_APP_BASE_URL}/api/category`)
       .then((res) => res.json())
-      .then((data) => setCategory(data))
-      .catch((err) => console.error("Ошибка загрузки слайдов", err));
+      .then((data) => {
+        console.log(data.length);
+        if (data && data.length > 1) {
+          setLengthSlider(data.length);
+        }
+        setCategory(data);
+      })
+      .catch((err) => console.error("Ошибка загрузки категорий", err));
   }, []);
   function SampleNextArrow(props) {
     const { className, onClick } = props;
@@ -40,7 +46,7 @@ const FeatureOne = () => {
     arrows: true,
     infinite: true,
     speed: 1000,
-    slidesToShow: 3,
+    slidesToShow: lengthSlider > 1 ? lengthSlider - 1 : 1,
     slidesToScroll: 1,
     initialSlide: 0,
     nextArrow: <SampleNextArrow />,
@@ -119,14 +125,14 @@ const FeatureOne = () => {
           <div className="feature-item-wrapper">
             <Slider {...settings}>
               {category.map((item, index) => (
-                <div className="feature-item text-center">
+                <div className="feature-item text-center" key={item.id}>
                   <div className="feature-item__thumb rounded-circle">
                     <Link to="/shop" className="w-100 h-100 flex-center">
                       <img
                         src={
-                          item.image
-                            ? item.image
-                            : "/assets/images/thumbs/feature-img2.png"
+                          item.image?.path
+                            ? `${process.env.REACT_APP_BASE_URL}/uploads/${item.image.path}`
+                            : ""
                         }
                         alt=""
                       />
@@ -138,7 +144,7 @@ const FeatureOne = () => {
                         {item.name}
                       </Link>
                     </h6>
-                    <span className="text-sm text-gray-400">125+ Products</span>
+                    {/* <span className="text-sm text-gray-400">125+ Products</span> */}
                   </div>
                 </div>
               ))}

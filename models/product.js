@@ -39,11 +39,21 @@ const Product = sequelize.define('Product', {
         type: DataTypes.TEXT,
         allowNull: true,
     },
-    // product_img: {
-    //     type: DataTypes.JSON, // массив объектов { url, alt }
-    //     allowNull: true,
-    //     defaultValue: [],
-    // },
+    is_for_bouquet: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
+        defaultValue: true,
+    },
+    is_for_sale: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
+        defaultValue: false,
+    },
+    is_for_coupon: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
+        defaultValue: false,
+    },
     product_img: {
         type: DataTypes.JSON, // Автоматическая обработка JSON
         allowNull: true,

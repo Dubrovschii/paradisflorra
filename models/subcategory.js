@@ -17,11 +17,12 @@ const Subcategory = sequelize.define('Subcategory', {
         allowNull: true,
         defaultValue: null
     },
-    created_at: DataTypes.STRING(10),
-    category_id: {
-        type: DataTypes.TINYINT,
+    parent_category: {
+        type: DataTypes.INTEGER,
         allowNull: true,
+        defaultValue: [],
     },
+
 }, {
     tableName: 'backend_subcategory',
     timestamps: false,

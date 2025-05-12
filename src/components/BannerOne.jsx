@@ -4,9 +4,8 @@ import Slider from "react-slick";
 
 const BannerOne = () => {
   const [slides, setSlides] = useState([]);
-
   useEffect(() => {
-    fetch("http://localhost:3001/")
+    fetch(`${process.env.REACT_APP_BASE_URL}/api/`)
       .then((res) => res.json())
       .then((data) => setSlides(data))
       .catch((err) => console.error("Ошибка загрузки слайдов", err));
@@ -94,7 +93,7 @@ const BannerOne = () => {
                       <img
                         src={
                           slide.slider_img?.path
-                            ? `http://localhost:3001/uploads/${slide.slider_img.path}`
+                            ? `${process.env.REACT_APP_BASE_URL}/uploads/${slide.slider_img.path}`
                             : ""
                         }
                         alt=""

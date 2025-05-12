@@ -27,6 +27,11 @@ const Category = sequelize.define('Category', {
         allowNull: true,
         defaultValue: null
     },
+    is_for_subcategory: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
+        defaultValue: false,
+    },
 }, {
     tableName: 'backend_category',
     timestamps: false,

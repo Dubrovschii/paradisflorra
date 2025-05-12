@@ -4,8 +4,11 @@ import Slider from './promoSlider.js';
 import Product from './product.js';
 
 
-Category.hasMany(Subcategory, { foreignKey: 'category_id' });
-Subcategory.belongsTo(Category, { foreignKey: 'category_id' });
+// Category.hasMany(Subcategory, { foreignKey: 'category_id' });
+// Subcategory.belongsTo(Category, { foreignKey: 'category_id' });
+
+Category.hasMany(Subcategory, { foreignKey: 'parent_category' });
+Subcategory.belongsTo(Category, { foreignKey: 'parent_category' });
 
 
 
