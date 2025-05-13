@@ -3,11 +3,8 @@
   "builds": [
     {
       "src": "server.js",
-      "use": "@vercel/node"
-    },
-    {
-      "src": "build/**/*",
-      "use": "@vercel/static"
+      "use": "@vercel/node",
+      "config": { "runtime": "nodejs20.x" }
     }
   ],
   "routes": [
@@ -16,12 +13,8 @@
       "dest": "server.js"
     },
     {
-      "src": "/(.*\\.(css|js|png|jpg|webp|svg|ico|woff|woff2|ttf|eot|json))",
-      "dest": "dist/$1"
-    },
-    {
       "src": "/(.*)",
-      "dest": "build/index.html"
+      "dest": "server.js"
     }
   ]
 }
