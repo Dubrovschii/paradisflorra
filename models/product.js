@@ -11,17 +11,11 @@ const Product = sequelize.define('Product', {
         type: DataTypes.STRING(255),
         allowNull: false,
     },
-    // product_category: {
-    //     type: DataTypes.JSON, // будет массив чисел: [1, 2, 3]
-    //     allowNull: false,
-    //     defaultValue: [],
-    // },
     product_category: {
         type: DataTypes.INTEGER,
         allowNull: true,
         defaultValue: [],
     },
-
     product_subcategory: {
         type: DataTypes.JSON,
         allowNull: true,
@@ -30,6 +24,21 @@ const Product = sequelize.define('Product', {
     product_price: {
         type: DataTypes.DECIMAL(10, 2),
         allowNull: false,
+    },
+    product_old_price: {
+        type: DataTypes.DECIMAL(10, 2),
+        allowNull: true,
+        defaultValue: null,
+    },
+    product_new_price: {
+        type: DataTypes.DECIMAL(10, 2),
+        allowNull: true,
+        defaultValue: null,
+    },
+    date_for_sale: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        defaultValue: null,
     },
     product_count: {
         type: DataTypes.INTEGER,
@@ -55,9 +64,9 @@ const Product = sequelize.define('Product', {
         defaultValue: false,
     },
     product_img: {
-        type: DataTypes.JSON, // Автоматическая обработка JSON
+        type: DataTypes.JSON,
         allowNull: true,
-        defaultValue: null
+        defaultValue: null,
     },
     product_rating: {
         type: DataTypes.DECIMAL(3, 2),

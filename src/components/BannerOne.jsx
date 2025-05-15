@@ -93,11 +93,19 @@ const BannerOne = () => {
                       <img
                         src={
                           slide.slider_img?.path
-                            ? `${process.env.REACT_APP_BASE_URL}/uploads/${slide.slider_img.path}`
+                            ? `https://22fe0b98-98dc-4698-bc7f-6e4b58d9167f-00-3knz5siaeg7wa.worf.replit.dev/uploads/${slide.slider_img.path}`
                             : ""
                         }
                         alt=""
                       />
+                      {/* <img
+                        src={
+                          slide.slider_img?.path
+                            ? `${process.env.REACT_APP_BASE_URL}/uploads/${slide.slider_img.path}`
+                            : ""
+                        }
+                        alt=""
+                      /> */}
                     </div>
                   </div>
                 </div>

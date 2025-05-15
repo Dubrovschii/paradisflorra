@@ -128,10 +128,18 @@ const FeatureOne = () => {
                 <div className="feature-item text-center" key={item.id}>
                   <div className="feature-item__thumb rounded-circle">
                     <Link to="/shop" className="w-100 h-100 flex-center">
-                      <img
+                      {/* <img
                         src={
                           item.image?.path
                             ? `${process.env.REACT_APP_BASE_URL}/uploads/${item.image.path}`
+                            : ""
+                        }
+                        alt=""
+                      /> */}
+                      <img
+                        src={
+                          item.image?.path
+                            ? `https://22fe0b98-98dc-4698-bc7f-6e4b58d9167f-00-3knz5siaeg7wa.worf.replit.dev/uploads/${item.image.path}`
                             : ""
                         }
                         alt=""

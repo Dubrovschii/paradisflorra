@@ -1,371 +1,63 @@
-// import AdminJS from 'adminjs';
-// import AdminJSExpress from '@adminjs/express';
-// import { Database, Resource } from '@adminjs/sequelize';
-// import 'dotenv/config';
-// import express from 'express';
-// import session from 'express-session';
-// import { Sequelize } from 'sequelize';
-// import cors from 'cors';
-// import path from 'path';
-// import { fileURLToPath } from 'url';
-// // import fs from 'fs';
-// import { AdminJSOptions } from './adminOptions/index.js';
-// import { componentLoader } from './adminOptions/componentLoader.js';
-
-
-// const __filename = fileURLToPath(import.meta.url);
-// const __dirname = path.dirname(__filename);
-
-// const app = express();
-
-// const PORT = process.env.PORTAdmin || 3001;
-// // Настройки CORS
-
-// app.use(cors({
-//     origin: ['http://localhost:3000', 'http://app.vetro.md', 'flowers-dev-market.vercel.app'],
-//     credentials: true,
-// }));
-
-// // Парсинг JSON
-// app.use(express.json());
-
-// // Настройка сессий
-// app.use(session({
-//     secret: process.env.SESSION_SECRET || 'default-secret',
-//     resave: false,
-//     saveUninitialized: false,
-//     cookie: {
-//         httpOnly: true,
-//         secure: process.env.NODE_ENV === 'production',
-//         maxAge: parseInt(process.env.SESSION_COOKIE_MAX_AGE) || 86400000, // по умолчанию 24 часа
-//     },
-// }));
-
-// // Подключение к базе данных через Sequelize
-// const sequelize = new Sequelize({
-//     host: process.env.DB_HOST || 'localhost',
-//     port: process.env.DB_PORT || 3306,
-//     username: process.env.DB_USER || 'root',
-//     password: process.env.DB_PASSWORD || '',
-//     database: process.env.DB_NAME || 'marketpro',
-//     dialect: 'mysql',
-//     logging: (sql, timing) => {
-//         console.log(`[SQL] ${sql}`);
-//         if (timing) console.log(`[Execution time: ${timing}ms]`);
-//     },
-//     benchmark: true,
-//     dialectOptions: {
-//         connectTimeout: 60000,
-//     },
-//     pool: {
-//         max: 5,
-//         min: 0,
-//         acquire: 30000,
-//         idle: 10000,
-//     },
-// });
-
-// // Подключение адаптера AdminJS для Sequelize
-// AdminJS.registerAdapter({ Database, Resource });
-
-// // Настройка AdminJS
-// const adminJs = new AdminJS({
-//     componentLoader,
-//     ...AdminJSOptions,
-//     rootPath: '/admin',
-//     assets: {
-//         styles: ['/custom.css'],
-//     },
-// });
-
-// // Учетные данные администратора
-// const DEFAULT_ADMIN = {
-//     email: 'admin@example.com',
-//     password: 'password',
-// };
-
-// // Аутентификация администратора
-// const authenticate = async (email, password) => {
-//     if (email === DEFAULT_ADMIN.email && password === DEFAULT_ADMIN.password) {
-//         return Promise.resolve(DEFAULT_ADMIN);
-//     }
-//     return null;
-// };
-
-// // Запуск сервера
-// const startServer = async () => {
-//     try {
-//         await sequelize.authenticate();
-//         console.log('Database connection established');
-
-//         const adminRouter = AdminJSExpress.buildAuthenticatedRouter(
-//             adminJs,
-//             { authenticate, cookiePassword: process.env.COOKIE_SECRET || 'super-secret-cookie' },
-//             null,
-//             {
-//                 resave: false,
-//                 saveUninitialized: false,
-//                 secret: process.env.SESSION_SECRET || 'super-secret',
-//                 cookie: {
-//                     httpOnly: true,
-//                     secure: process.env.NODE_ENV === 'production',
-//                     // domain: process.env.NODE_ENV === 'production' ? '.vetro.md' : undefined
-//                 },
-//                 name: 'adminjs',
-//             }
-//         );
-
-//         app.use(adminJs.options.rootPath, adminRouter);
-
-//         // API endpoints
-//         app.get('/api/', async (req, res) => {
-//             try {
-//                 const [results] = await sequelize.query('SELECT * FROM backend_slider');
-//                 res.status(200).json(results);
-//             } catch (err) {
-//                 res.status(500).json({ error: err.message });
-//             }
-//         });
-//         app.use('/', express.static('build'));
-//         app.get('/api/category', async (req, res) => {
-//             try {
-//                 const [results] = await sequelize.query('SELECT * FROM backend_category');
-//                 res.status(200).json(results);
-//             } catch (err) {
-//                 res.status(500).json({ error: err.message });
-//             }
-//         });
-//         app.get('/api/subcategory', async (req, res) => {
-//             try {
-//                 const [results] = await sequelize.query('SELECT * FROM backend_subcategory');
-//                 res.status(200).json(results);
-//             } catch (err) {
-//                 res.status(500).json({ error: err.message });
-//             }
-//         });
-//         app.get('/api/product', async (req, res) => {
-//             try {
-//                 const page = parseInt(req.query.page) || 1;
-//                 const perPage = parseInt(req.query.perPage) || 10;
-//                 const offset = (page - 1) * perPage;
-
-//                 const [[{ total }]] = await sequelize.query('SELECT COUNT(*) AS total FROM backend_product');
-//                 const [results] = await sequelize.query(`SELECT * FROM backend_product LIMIT ${perPage} OFFSET ${offset}`);
-
-//                 res.status(200).json({
-//                     data: results,
-//                     total,
-//                     page,
-//                     perPage,
-//                     totalProducts: total,
-//                     totalPages: Math.ceil(total / perPage),
-//                 });
-//             } catch (err) {
-//                 res.status(500).json({ error: err.message });
-//             }
-//         });
-
-//         // app.get('/api/product', async (req, res) => {
-//         //     try {
-//         //         const [results] = await sequelize.query('SELECT * FROM backend_product');
-//         //         res.status(200).json(results);
-//         //     } catch (err) {
-//         //         res.status(500).json({ error: err.message });
-//         //     }
-//         // });
-//         app.get('/api/locations', async (req, res) => {
-//             try {
-//                 const [results] = await sequelize.query('SELECT * FROM backend_locations');
-//                 res.status(200).json(results);
-//             } catch (err) {
-//                 res.status(500).json({ error: err.message });
-//             }
-//         });
-
-//         app.use('/uploads/promoslider', express.static(path.join(__dirname, 'public', 'uploads/promoslider')));
-//         app.use('/uploads', express.static(path.join(__dirname, 'public', 'uploads')));
-//         adminJs.watch()
-
-//         app.listen(PORT, () => {
-//             console.log(PORT);
-//             console.log('Server is running on http://localhost:3000');
-//             console.log('AdminJS is running at http://localhost:3001/admin');
-//         });
-
-//     } catch (error) {
-//         console.error('Failed to start server:', error);
-//         process.exit(1);
-//     }
-// };
-
-// startServer();
-
-
-import AdminJS from 'adminjs';
-import AdminJSExpress from '@adminjs/express';
-import { Database, Resource } from '@adminjs/sequelize';
-import 'dotenv/config';
 import express from 'express';
-import { Sequelize } from 'sequelize';
 import cors from 'cors';
+import session from 'express-session';
+import sequelize from './config/database.js';
+import dotenv from 'dotenv';
+import sliderRoutes from './routes/slider.js';
+import categoryRoutes from './routes/category.js';
+import subcategoryRoutes from './routes/subcategory.js';
+import productRoutes from './routes/product.js';
+import locationsRoutes from './routes/locations.js';
 
-// Инициализация Express
+import setupAdminPanel from './adminpanel.js';
+dotenv.config();
+
+
 const app = express();
 
-// Настройки CORS для Vercel
 app.use(cors({
     origin: [
         'http://localhost:3000',
-        'https://app.vetro.md',
+        'http://localhost:3001',
+        'http://app.vetro.md',
         'https://flowers-dev-market.vercel.app'
     ],
-    credentials: true
+    credentials: true,
 }));
 
-// Парсинг JSON
 app.use(express.json());
 
-// Подключение адаптера AdminJS для Sequelize
-AdminJS.registerAdapter({ Database, Resource });
+app.use(session({
+    secret: process.env.SESSION_SECRET || 'default-secret',
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        maxAge: parseInt(process.env.SESSION_COOKIE_MAX_AGE) || 86400000,
+    },
+}));
 
-// Создаем соединение с базой данных (будет переиспользоваться между вызовами)
-let cachedSequelize = null;
+app.use('/api/slider', sliderRoutes);
+app.use('/api/category', categoryRoutes);
+app.use('/api/subcategory', subcategoryRoutes);
+app.use('/api/product', productRoutes);
+app.use('/api/locations', locationsRoutes);
 
-const initDatabase = async () => {
-    if (cachedSequelize) {
-        return cachedSequelize;
-    }
-
-    const sequelize = new Sequelize({
-        host: process.env.DB_HOST,
-        port: process.env.DB_PORT,
-        username: process.env.DB_USER,
-        password: process.env.DB_PASSWORD,
-        database: process.env.DB_NAME,
-        dialect: 'mysql',
-        dialectOptions: {
-            connectTimeout: 60000,
-        },
-        pool: {
-            max: 2, // Уменьшаем для serverless
-            min: 0,
-            acquire: 30000,
-            idle: 10000,
-        },
-        logging: false // Отключаем логи в production
-    });
-
+const startServer = async () => {
     try {
         await sequelize.authenticate();
-        cachedSequelize = sequelize;
-        return sequelize;
-    } catch (error) {
-        console.error('Database connection failed:', error);
-        throw error;
-    }
-};
+        console.log('Database connection established');
 
-// Настройка AdminJS
-const setupAdmin = async () => {
-    const sequelize = await initDatabase();
+        await setupAdminPanel(app);
 
-    const adminJs = new AdminJS({
-        databases: [sequelize],
-        rootPath: '/admin',
-    });
-
-    const ADMIN = {
-        email: process.env.ADMIN_EMAIL || 'admin@example.com',
-        password: process.env.ADMIN_PASSWORD || 'password'
-    };
-
-    const adminRouter = AdminJSExpress.buildAuthenticatedRouter(
-        adminJs,
-        {
-            authenticate: async (email, password) => {
-                if (email === ADMIN.email && password === ADMIN.password) {
-                    return ADMIN;
-                }
-                return null;
-            },
-            cookiePassword: process.env.COOKIE_SECRET || 'secret'
-        },
-        null,
-        {
-            resave: false,
-            saveUninitialized: true,
-            cookie: {
-                httpOnly: process.env.NODE_ENV === 'production',
-                secure: process.env.NODE_ENV === 'production'
-            }
-        }
-    );
-
-    return adminRouter;
-};
-
-// Инициализация AdminJS (ленивая загрузка)
-let adminRouterPromise = null;
-const getAdminRouter = () => {
-    if (!adminRouterPromise) {
-        adminRouterPromise = setupAdmin();
-    }
-    return adminRouterPromise;
-};
-
-// API Endpoints
-app.get('/api', async (req, res) => {
-    try {
-        const sequelize = await initDatabase();
-        const [results] = await sequelize.query('SELECT * FROM backend_slider');
-        res.json(results);
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Internal Server Error' });
-    }
-});
-
-app.get('/api/category', async (req, res) => {
-    try {
-        const sequelize = await initDatabase();
-        const [results] = await sequelize.query('SELECT * FROM backend_category');
-        res.json(results);
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Internal Server Error' });
-    }
-});
-
-app.get('/api/product', async (req, res) => {
-    try {
-        const sequelize = await initDatabase();
-        const page = parseInt(req.query.page) || 1;
-        const perPage = parseInt(req.query.perPage) || 10;
-        const offset = (page - 1) * perPage;
-
-        const [[{ total }]] = await sequelize.query('SELECT COUNT(*) AS total FROM backend_product');
-        const [results] = await sequelize.query(
-            `SELECT * FROM backend_product LIMIT ${perPage} OFFSET ${offset}`
-        );
-
-        res.json({
-            data: results,
-            total,
-            page,
-            perPage,
-            totalPages: Math.ceil(total / perPage)
+        app.listen(process.env.PORTAdmin, () => {
+            console.log('Server running at http://localhost:3001');
         });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Internal Server Error' });
+    } catch (err) {
+        console.error('Failed to start server:', err);
+        process.exit(1);
     }
-});
+};
 
-// AdminJS Route
-app.use('/admin', async (req, res, next) => {
-    const adminRouter = await getAdminRouter();
-    adminRouter(req, res, next);
-});
-
-// Обработчик для Vercel
-module.exports = app;
+startServer();

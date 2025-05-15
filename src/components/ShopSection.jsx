@@ -29,6 +29,8 @@ const ShopSection = () => {
   const [perPage] = useState(3);
   const [totalPages, setTotalPages] = useState(0);
   const [totalProducts, setTotalProducts] = useState(0);
+  // const [cachedImages, setCachedImages] = useState({});
+
   useEffect(() => {
     fetch(
       `${process.env.REACT_APP_BASE_URL}/api/product?page=${page}&perPage=${perPage}`
@@ -549,11 +551,19 @@ const ShopSection = () => {
                     to="/product-details"
                     className="product-card__thumb flex-center rounded-8 bg-gray-50 position-relative"
                   >
-                    <img
+                    {/* <img
                       src={
                         product.product_img?.path
                           ? `${process.env.REACT_APP_BASE_URL}/uploads/${product.product_img.path}`
                           : "assets/images/thumbs/product-two-img1.png"
+                      }
+                      alt=""
+                    /> */}
+                    <img
+                      src={
+                        product.product_img?.path
+                          ? `https://22fe0b98-98dc-4698-bc7f-6e4b58d9167f-00-3knz5siaeg7wa.worf.replit.dev/uploads/${product.product_img.path}`
+                          : ""
                       }
                       alt=""
                     />
