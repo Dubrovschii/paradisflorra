@@ -1,16 +1,12 @@
-// import AdminJS from 'adminjs';
-// import path from 'path';
-// import { fileURLToPath } from 'url';
-import { Slider, Category, Subcategory, Product } from '../models/index.js';
-import { productOptions, productFeatures } from './productOption.js'
-import { promoSliderOptions, promoSliderFeatures } from './promoSliderOptions.js'
-import { categoryOptions, categoryFeatures } from './categoryOptions.js'
-import { subcategoryOptions, subcategoryFeatures } from './subcategoryOptions.js'
-import { componentLoader, Components } from './componentLoader.js';
-
+const { Slider, Category, Subcategory, Product } = require('../models/index.js');
+const { productOptions, productFeatures } = require('./productOption.js');
+const { promoSliderOptions, promoSliderFeatures } = require('./promoSliderOptions.js');
+const { categoryOptions, categoryFeatures } = require('./categoryOptions.js');
+const { subcategoryOptions, subcategoryFeatures } = require('./subcategoryOptions.js');
+const { componentLoader, Components } = require('./componentLoader.js');
 
 // Экспортируем опции AdminJS
-export const AdminJSOptions = {
+const AdminJSOptions = {
     componentLoader,
     resources: [
         {
@@ -44,3 +40,5 @@ export const AdminJSOptions = {
         logo: '/logo.png',
     },
 };
+
+module.exports = { AdminJSOptions };

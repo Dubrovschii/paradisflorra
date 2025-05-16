@@ -1,15 +1,10 @@
-import { ComponentLoader } from 'adminjs';
-import path from 'path';
-import { fileURLToPath } from 'url';
+const AdminJS = require('adminjs');
+const path = require('path');
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const componentLoader = new AdminJS.ComponentLoader();
 
-const componentLoader = new ComponentLoader();
-
-// Регистрируем только наши кастомные компоненты
 const Components = {
-    Dashboard: componentLoader.add('Dashboard', path.join(__dirname, 'components/imageAdd.jsx')),
+    Dashboard: componentLoader.add('Dashboard', path.join(__dirname, 'components', 'imageAdd.jsx')),
 };
 
-export { componentLoader, Components };
+module.exports = { componentLoader, Components };

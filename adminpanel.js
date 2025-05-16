@@ -1,9 +1,12 @@
-import AdminJS from 'adminjs';
-import AdminJSSequelize from '@adminjs/sequelize';
-import AdminJSExpress from '@adminjs/express';
-import { AdminJSOptions } from './adminOptions/index.js';
-import { componentLoader } from './adminOptions/componentLoader.js';
-import sequelize from './config/database.js';
+const AdminJS = require('adminjs');
+const AdminJSSequelize = require('@adminjs/sequelize');
+const AdminJSExpress = require('@adminjs/express');
+// const AdminJSOptions = require('./adminOptions/index.js');
+const { AdminJSOptions } = require('./adminOptions/index.js');
+
+const { componentLoader } = require('./adminOptions/componentLoader.js'); // <-- Деструктуризация!
+const sequelize = require('./config/database.js');
+
 
 AdminJS.registerAdapter(AdminJSSequelize);
 
@@ -19,15 +22,15 @@ const authenticate = async (email, password) => {
     return null;
 };
 
-export default async function setupAdminPanel(app) {
+async function setupAdminPanel(app) {
     try {
         // Проверяем соединение с базой
         await sequelize.authenticate();
         console.log('✅ Database connection established for AdminJS');
 
         const adminJs = new AdminJS({
-            componentLoader,
             ...AdminJSOptions,
+            componentLoader,
             rootPath: '/admin',
         });
 
@@ -55,6 +58,8 @@ export default async function setupAdminPanel(app) {
         adminJs.watch();
     } catch (error) {
         console.error('❌ Failed to connect to database for AdminJS:', error);
-        throw error; // проброс ошибки дальше, чтобы сервер не запускался без базы
+        throw error;
     }
 }
+
+module.exports = setupAdminPanel;

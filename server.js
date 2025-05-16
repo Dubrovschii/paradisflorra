@@ -1,17 +1,19 @@
-import express from 'express';
-import cors from 'cors';
-import session from 'express-session';
-import sequelize from './config/database.js';
-import dotenv from 'dotenv';
-import sliderRoutes from './routes/slider.js';
-import categoryRoutes from './routes/category.js';
-import subcategoryRoutes from './routes/subcategory.js';
-import productRoutes from './routes/product.js';
-import locationsRoutes from './routes/locations.js';
+const express = require('express');
+const http = require('http');
+const cors = require('cors');
+const session = require('express-session');
+const sequelize = require('./config/database.js');
+const dotenv = require('dotenv');
+const path = require('path');
 
-import setupAdminPanel from './adminpanel.js';
+const sliderRoutes = require('./routes/slider.js');
+const categoryRoutes = require('./routes/category.js');
+const subcategoryRoutes = require('./routes/subcategory.js');
+const productRoutes = require('./routes/product.js');
+const locationsRoutes = require('./routes/locations.js');
+const setupAdminPanel = require('./adminpanel.js');
+
 dotenv.config();
-
 
 const app = express();
 
@@ -20,7 +22,7 @@ app.use(cors({
         'http://localhost:3000',
         'http://localhost:3001',
         'http://app.vetro.md',
-        'https://flowers-dev-market.vercel.app'
+        'https://flowers.vetro.md'
     ],
     credentials: true,
 }));
@@ -38,6 +40,7 @@ app.use(session({
     },
 }));
 
+// API маршруты
 app.use('/api/slider', sliderRoutes);
 app.use('/api/category', categoryRoutes);
 app.use('/api/subcategory', subcategoryRoutes);
@@ -51,7 +54,19 @@ const startServer = async () => {
 
         await setupAdminPanel(app);
 
-        app.listen(process.env.PORTAdmin, () => {
+        if (process.env.NODE_ENV === 'production') {
+            // Отдаём React билд
+            app.use(express.static(path.join(__dirname, 'build')));
+
+            // SPA fallback для всех путей, кроме /api
+            app.get(/^\/(?!api).*/, (req, res) => {
+                res.sendFile(path.join(__dirname, 'build', 'index.html'));
+            });
+        }
+
+        // Создаём сервер вручную
+        const server = http.createServer(app);
+        server.listen(3001, () => {
             console.log('Server running at http://localhost:3001');
         });
     } catch (err) {

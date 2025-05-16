@@ -5,7 +5,7 @@ import Slider from "react-slick";
 const BannerOne = () => {
   const [slides, setSlides] = useState([]);
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_BASE_URL}/api/`)
+    fetch(`${process.env.REACT_APP_BASE_URL}/api/slider`)
       .then((res) => res.json())
       .then((data) => setSlides(data))
       .catch((err) => console.error("Ошибка загрузки слайдов", err));
