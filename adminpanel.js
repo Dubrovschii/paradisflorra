@@ -4,7 +4,7 @@ const AdminJSExpress = require('@adminjs/express');
 // const AdminJSOptions = require('./adminOptions/index.js');
 const { AdminJSOptions } = require('./adminOptions/index.js');
 
-const { componentLoader } = require('./adminOptions/componentLoader.js'); // <-- Деструктуризация!
+const { componentLoader } = require('./adminOptions/componentLoader.js'); 
 const sequelize = require('./config/database.js');
 
 
@@ -24,7 +24,7 @@ const authenticate = async (email, password) => {
 
 async function setupAdminPanel(app) {
     try {
-        // Проверяем соединение с базой
+    
         await sequelize.authenticate();
         console.log('✅ Database connection established for AdminJS');
 
@@ -32,6 +32,9 @@ async function setupAdminPanel(app) {
             ...AdminJSOptions,
             componentLoader,
             rootPath: '/admin',
+             locale: {
+                language: 'ro',  
+            },
         });
 
         const adminRouter = AdminJSExpress.buildAuthenticatedRouter(

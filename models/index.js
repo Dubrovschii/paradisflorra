@@ -1,27 +1,21 @@
-import Category from './category.js';
-import Subcategory from './subcategory.js';
-import Slider from './promoSlider.js';
-import Product from './product.js';
-
-
-// Category.hasMany(Subcategory, { foreignKey: 'category_id' });
-// Subcategory.belongsTo(Category, { foreignKey: 'category_id' });
-
+const Category = require('./category.js');
+const Subcategory = require('./subcategory.js');
+const Slider = require('./promoSlider.js');
+const Product = require('./product.js');
+const Order = require('./order.js');
+const Customer = require('./Customer.js');
+const Delivery = require('./delivery.js');
 Category.hasMany(Subcategory, { foreignKey: 'parent_category' });
 Subcategory.belongsTo(Category, { foreignKey: 'parent_category' });
 
+module.exports = {
+  Category,
+  Subcategory,
+  Slider,
+  Product,
+  Order,
+  Customer,
+  Delivery
 
-
-
-Category.hasMany(Product, { foreignKey: 'product_category' });
-Product.belongsTo(Category, { foreignKey: 'product_category' });
-
-Subcategory.hasMany(Product, { foreignKey: 'product_subcategory' });
-Product.belongsTo(Subcategory, { foreignKey: 'product_subcategory' });
-
-export {
-    Category,
-    Subcategory,
-    Slider,
-    Product
 };
+

@@ -1,5 +1,5 @@
-import { DataTypes } from 'sequelize';
-import sequelize from '../config/database.js'; // Подключение к базе данных
+const { DataTypes } = require('sequelize');
+const sequelize = require('../config/database.js'); // Подключение к базе данных
 
 const Slider = sequelize.define('Slider', {
     id: {
@@ -10,7 +10,7 @@ const Slider = sequelize.define('Slider', {
     slider_img: {
         type: DataTypes.JSON,
         allowNull: true,
-        defaultValue: null
+        defaultValue: null,
     },
     slider_title: {
         type: DataTypes.STRING,
@@ -33,4 +33,4 @@ const Slider = sequelize.define('Slider', {
     timestamps: false, // если таблица не имеет столбцов createdAt и updatedAt
 });
 
-export default Slider;
+module.exports = Slider;

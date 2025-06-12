@@ -1,5 +1,3 @@
-// import express from 'express';
-// import sequelize from '../config/database.js';
 const express = require('express');
 const sequelize = require('../config/database');
 const router = express.Router();
@@ -14,4 +12,3 @@ router.get('/', async (req, res) => {
 });
 
 module.exports = router
-// export default router;

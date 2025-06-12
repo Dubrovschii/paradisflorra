@@ -15,7 +15,9 @@ const UploadPhoto = (props) => {
 
   return (
     <Box>
-      <h1 className="admin__title">Welcome to AdminPanel, my dear Admin</h1>
+      <h1 className="admin__title">
+        Bun venit pe AdminPanel, dragă Administratorule!
+      </h1>
     </Box>
   );
 };

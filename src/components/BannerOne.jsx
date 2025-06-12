@@ -47,6 +47,74 @@ const BannerOne = () => {
   };
 
   return (
+    // <div className="banner">
+    //   <div className="container container-lg">
+    //     <div className="banner-item rounded-24 overflow-hidden position-relative arrow-center">
+    //       <a
+    //         href="#featureSection"
+    //         className="scroll-down w-84 h-84 text-center flex-center bg-main-600 rounded-circle border border-5 text-white border-white position-absolute start-50 translate-middle-x bottom-0 hover-bg-main-800"
+    //       >
+    //         <span className="icon line-height-0">
+    //           <i className="ph ph-caret-double-down" />
+    //         </span>
+    //       </a>
+
+    //       <img
+    //         src="/assets/images/bg/banner-bg.png"
+    //         alt=""
+    //         className="banner-img position-absolute inset-block-start-0 inset-inline-start-0 w-100 h-100 z-n1 object-fit-cover rounded-24"
+    //       />
+
+    //       <div className="banner-slider">
+    //         <Slider {...settings}>
+    //           {slides.map((slide, index) => (
+    //             <div className="banner-slider__item" key={slide.id}>
+    //               <div className="banner-slider__inner flex-between position-relative">
+    //                 <div className="banner-item__content">
+    //                   <h1 className="banner-item__title">
+    //                     {slide.slider_title}
+    //                   </h1>
+    //                   <p className="banner-item__descr">{slide.slider_descr}</p>
+    //                   {slide.slider_link && (
+    //                     <a
+    //                       href={slide.slider_link}
+    //                       target="_blank"
+    //                       rel="noreferrer"
+    //                       className="btn btn-main d-inline-flex align-items-center rounded-pill gap-8"
+    //                     >
+    //                       {slide.slider_link_text || "Подробнее"}{" "}
+    //                       {/* <span className="icon text-xl d-flex">
+    //                         <i className="ph ph-shopping-cart-simple" />
+    //                       </span> */}
+    //                     </a>
+    //                   )}
+    //                 </div>
+    //                 <div className="banner-item__thumb">
+    //                   <img
+    //                     src={
+    //                       slide.slider_img?.path
+    //                         ? `${process.env.REACT_APP_BASE_URL}/uploads/${slide.slider_img.path}`
+    //                         : ""
+    //                     }
+    //                     alt=""
+    //                   />
+    //                   {/* <img
+    //                     src={
+    //                       slide.slider_img?.path
+    //                         ? `${process.env.REACT_APP_BASE_URL}/uploads/${slide.slider_img.path}`
+    //                         : ""
+    //                     }
+    //                     alt=""
+    //                   /> */}
+    //                 </div>
+    //               </div>
+    //             </div>
+    //           ))}
+    //         </Slider>
+    //       </div>
+    //     </div>
+    //   </div>
+    // </div>
     <div className="banner">
       <div className="container container-lg">
         <div className="banner-item rounded-24 overflow-hidden position-relative arrow-center">
@@ -66,10 +134,92 @@ const BannerOne = () => {
           />
 
           <div className="banner-slider">
-            <Slider {...settings}>
-              {slides.map((slide, index) => (
-                <div className="banner-slider__item" key={slide.id}>
-                  <div className="banner-slider__inner flex-between position-relative">
+            {slides.length > 1 ? (
+              <Slider {...settings}>
+                {slides.map((slide, index) => (
+                  <div
+                    className="row align-items-center gy-4"
+                    key={`${slide.id}-${index}`}
+                  >
+                    <div className="banner-slider__item">
+                      <div className="banner-slider__inner flex-between position-relative">
+                        <div className="col-lg-6">
+                          <div className="banner-item__content">
+                            <h1 className="banner-item__title">
+                              {slide.slider_title}
+                            </h1>
+                            <p className="banner-item__descr">
+                              {slide.slider_descr}
+                            </p>
+                            {slide.slider_link && (
+                              <a
+                                href={slide.slider_link}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="btn btn-main d-inline-flex align-items-center rounded-pill gap-8"
+                              >
+                                {slide.slider_link_text || "Подробнее"}
+                              </a>
+                            )}
+                          </div>
+                        </div>
+                        <div className="col-lg-6">
+                          <div className="banner-item__thumb">
+                            <img
+                              src={
+                                slide.slider_img?.path
+                                  ? `${process.env.REACT_APP_BASE_URL}/uploads/${slide.slider_img.path}`
+                                  : ""
+                              }
+                              alt=""
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  // <div className="banner-slider__item" key={slide.id}>
+                  //   <div className="banner-slider__inner flex-between position-relative">
+                  //     <div className="banner-item__content">
+                  //       <h1 className="banner-item__title">
+                  //         {slide.slider_title}
+                  //       </h1>
+                  //       <p className="banner-item__descr">
+                  //         {slide.slider_descr}
+                  //       </p>
+                  //       {slide.slider_link && (
+                  //         <a
+                  //           href={slide.slider_link}
+                  //           target="_blank"
+                  //           rel="noreferrer"
+                  //           className="btn btn-main d-inline-flex align-items-center rounded-pill gap-8"
+                  //         >
+                  //           {slide.slider_link_text || "Подробнее"}
+                  //         </a>
+                  //       )}
+                  //     </div>
+                  //     <div className="banner-item__thumb">
+                  //       <img
+                  //         src="https://flowers.vetro.md/uploads/promoslider/21/1748906617520-Imagine%20WhatsApp%202025-06-02%20la%2020.37.08_22d42ddc.jpg"
+                  //         // src={
+                  //         //   slide.slider_img?.path
+                  //         //     ? `${process.env.REACT_APP_BASE_URL}/uploads/${slide.slider_img.path}`
+                  //         //     : ""
+                  //         // }
+                  //         alt=""
+                  //       />
+                  //     </div>
+                  //   </div>
+                  // </div>
+                ))}
+              </Slider>
+            ) : (
+              slides.map((slide, index) => (
+                <div className="banner-slider__item">
+                  <div
+                    className="banner-slider__inner flex-between position-relative"
+                    key={`${slide.id}-${index}`}
+                  >
                     <div className="banner-item__content">
                       <h1 className="banner-item__title">
                         {slide.slider_title}
@@ -82,10 +232,7 @@ const BannerOne = () => {
                           rel="noreferrer"
                           className="btn btn-main d-inline-flex align-items-center rounded-pill gap-8"
                         >
-                          {slide.slider_link_text || "Подробнее"}{" "}
-                          {/* <span className="icon text-xl d-flex">
-                            <i className="ph ph-shopping-cart-simple" />
-                          </span> */}
+                          {slide.slider_link_text || "Подробнее"}
                         </a>
                       )}
                     </div>
@@ -93,24 +240,16 @@ const BannerOne = () => {
                       <img
                         src={
                           slide.slider_img?.path
-                            ? `https://22fe0b98-98dc-4698-bc7f-6e4b58d9167f-00-3knz5siaeg7wa.worf.replit.dev/uploads/${slide.slider_img.path}`
-                            : ""
-                        }
-                        alt=""
-                      />
-                      {/* <img
-                        src={
-                          slide.slider_img?.path
                             ? `${process.env.REACT_APP_BASE_URL}/uploads/${slide.slider_img.path}`
                             : ""
                         }
                         alt=""
-                      /> */}
+                      />
                     </div>
                   </div>
                 </div>
-              ))}
-            </Slider>
+              ))
+            )}
           </div>
         </div>
       </div>

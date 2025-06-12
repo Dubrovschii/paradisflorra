@@ -1,5 +1,8 @@
 /* Shipping Css Start */
 .shipping-item {
-    padding: clampCal(24, 32)  clampCal(24, 54, 1399, 1899);
+  padding: clampCal(24, 32) clampCal(24, 54, 1399, 1899);
+  display: flex;
+  min-height: 1px;
+  height: 100%;
 }
 /* Shipping Css End */
